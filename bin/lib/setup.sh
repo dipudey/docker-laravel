@@ -10,7 +10,7 @@ cd docker-laravel
 mkdir -p src
 
 # Run the docker container first
-bin/start
+bin/start --build
 
 # Run the bin/download script
 bin/download
