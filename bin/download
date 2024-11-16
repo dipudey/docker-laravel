@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Check if 'src' directory exists and is not empty
+if [ -d "./src" ] && [ "$(ls -A ./src)" ]; then
+  echo "Error: The \"src\" directory is not empty. Please remove all contents within this directory and try again."
+  exit 1
+fi
+
+echo "Fixing filesystem ownerships..."
+bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www
+bin/docker-compose exec -u root -T php chmod -R 775 /var/www
+echo "Filesystem ownerships fixed."
+
+# Clear Composer cache to avoid issues with corrupted downloads
+bin/docker-compose exec -u root -T php composer clear-cache
+
+echo "Creating Laravel project..."
+bin/composer create-project --prefer-dist laravel/laravel .
+
+# Fix permissions for the storage and cache directories
+bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+bin/docker-compose exec -u root -T php chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+echo "Laravel project created successfully!"

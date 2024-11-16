@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if docker compose version > /dev/null 2>&1; then
+  DOCKER_COMPOSE="docker compose"
+else
+  DOCKER_COMPOSE="docker-compose"
+fi
+
+COMPOSE_FILES=("docker-compose.yml")
+COMPOSE_FILES_PREFIXED=()
+for file in "${COMPOSE_FILES[@]}"; do
+  COMPOSE_FILES_PREFIXED+=("-f" "$file")
+done
+
+${DOCKER_COMPOSE} "${COMPOSE_FILES_PREFIXED[@]}" "$@"

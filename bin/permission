@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "Fixing filesystem ownerships..."
+bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www
+bin/docker-compose exec -u root -T php chmod -R 775 /var/www
+
+# Fix permissions for the storage and cache directories
+bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+bin/docker-compose exec -u root -T php chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+echo "Filesystem ownerships fixed."
