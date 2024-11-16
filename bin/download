@@ -12,7 +12,7 @@ bin/docker-compose exec -u root -T php chmod -R 775 /var/www
 echo "Filesystem ownerships fixed."
 
 # Clear Composer cache to avoid issues with corrupted downloads
-bin/docker-compose exec -u root -T php composer clear-cache
+bin/docker-compose exec -u root -T php composer clear-cache > /dev/null 2>&1
 
 echo "Creating Laravel project..."
 bin/composer create-project --prefer-dist laravel/laravel .
