@@ -15,7 +15,7 @@ echo "Filesystem ownerships fixed."
 bin/docker-compose exec -u root -T php composer clear-cache > /dev/null 2>&1
 
 echo "Creating Laravel project..."
-bin/composer create-project --prefer-dist laravel/laravel .
+bin/docker-compose exec -u root php composer create-project --prefer-dist laravel/laravel .
 
 # Fix permissions for the storage and cache directories
 bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

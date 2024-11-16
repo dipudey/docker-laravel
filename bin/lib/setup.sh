@@ -9,8 +9,6 @@ cd docker-laravel
 # Set permission for execute
 chmod +x bin/*
 
-chmod 777 docker/phpmyadmin
-
 # Create the src directory if it doesn't exist
 mkdir -p src
 
