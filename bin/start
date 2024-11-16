@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-bin/docker-compose up -d
+bin/docker-compose up -d "$@"

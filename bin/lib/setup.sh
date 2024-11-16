@@ -9,5 +9,8 @@ cd docker-laravel
 # Create the src directory if it doesn't exist
 mkdir -p src
 
+# Run the docker container first
+bin/start
+
 # Run the bin/download script
 bin/download
