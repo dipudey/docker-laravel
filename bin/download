@@ -6,19 +6,17 @@ if [ -d "./src" ] && [ "$(ls -A ./src)" ]; then
   exit 1
 fi
 
+echo "Creating Laravel project..."
+bin/docker-compose exec -T php composer create-project --prefer-dist laravel/laravel .
+echo "Laravel project created successfully!"
+
 echo "Fixing filesystem ownerships..."
-bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www
-bin/docker-compose exec -u root -T php chmod -R 775 /var/www
+bin/docker-compose exec -T php chown -R www-data:www-data /var/www
+bin/docker-compose exec -T php chmod -R 775 /var/www
+
+## Fix permissions for the storage and cache directories
+bin/docker-compose exec -T php chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+bin/docker-compose exec -T php chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 echo "Filesystem ownerships fixed."
 
-# Clear Composer cache to avoid issues with corrupted downloads
-bin/docker-compose exec -u root -T php composer clear-cache > /dev/null 2>&1
 
-echo "Creating Laravel project..."
-bin/docker-compose exec -u root php composer create-project --prefer-dist laravel/laravel .
-
-# Fix permissions for the storage and cache directories
-bin/docker-compose exec -u root -T php chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-bin/docker-compose exec -u root -T php chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-
-echo "Laravel project created successfully!"
