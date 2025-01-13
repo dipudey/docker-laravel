@@ -31,10 +31,13 @@ RUN pecl install pcov && docker-php-ext-enable pcov
 # && echo ";zend_extension=xdebug" > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Node.js, NPM, Yarn
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -  #
-RUN apt-get install -y nodejs
-RUN npm install npm@latest -g
-RUN npm install yarn -g
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - \
+  && apt-get install -y nodejs \
+  && node -v \
+  && npm -v \
+  && npm cache clean --force \
+  && npm install npm@latest -g --unsafe-perm=true \
+  && npm install yarn -g
 
 # Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
